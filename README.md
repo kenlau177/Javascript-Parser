@@ -1,1 +1,14 @@
 # Javascript-Parser
+
+### About:
+An API written in javascript that parses a string of javascript code, and executes three different tests. These tests include a white, black, and structured list of functionalities. There is a single function for each of these tests. The output is a string in javascript with a message corresponding to the test performed. The message suggests the feedback upon the performing the test.
+
+I provided a demo below that incorporates the following tests:
+
+- White list test: for statement, variable declaration, function declaration.
+- Black list test: while statement.
+- Structured test: function declaration then for statment.
+
+[Demo](http://kenlau177.github.io/Javascript-Parser/)
+
+
