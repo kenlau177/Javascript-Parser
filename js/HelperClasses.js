@@ -1,12 +1,16 @@
 
-// Helper Classes - these classes correspond to three classes for each of the 
-// three types of tests.
 
+// Helper Classes - these classes allow the strategy design pattern so that 
+// the three tests are gracefully incorporated.
 
+// the syntax list is the syntaxes of interest
 var WhiteTest = function(syntaxList) {
 	this.syntaxList = syntaxList;
 }
 
+// compare the syntax list with the syntaxes found from traversing the 
+// abstract syntax tree.
+// outputs the syntaxes that are still missing
 WhiteTest.prototype.checkItems = function(collectedSyntaxes) {
 	itemsRemain = [];
 	for(w in this.syntaxList) {
@@ -34,6 +38,7 @@ var BlackTest = function(syntaxList) {
 	this.syntaxList = syntaxList;
 }
 
+// outputs the syntaxes that match with those found in the syntax tree
 BlackTest.prototype.checkItems = function(collectedSyntaxes) {
 	itemsPresent = [];
 	for(w in this.syntaxList) {
@@ -61,6 +66,9 @@ var StructuredTest = function(syntaxList) {
 	this.syntaxList = syntaxList;
 }
 
+// if the syntaxes match exactly with the abstract syntax tree, then 
+// output an empty array
+// otherwise output the syntax list.
 StructuredTest.prototype.checkItems = function(collectedSyntaxes) {
 	if(collectedSyntaxes.length < this.syntaxList.length) {
 		return this.syntaxList;
@@ -77,7 +85,7 @@ StructuredTest.prototype.getMessage = function(items) {
 	if(items.length > 0) {
 		return "This program must be coded in the following sequence: " + concatStrings(items) + ".";
 	} else {
-		return "Successfully passed structed test.";
+		return "Successfully passed structured test.";
 	}	
 }
 
@@ -85,4 +93,5 @@ StructuredTest.prototype.showAlert = function(message) {
 	$("#alert3").html("<div class='alert alert-info'>" + message + "</div>");
   $("#alert3").show();
 }
+
 
