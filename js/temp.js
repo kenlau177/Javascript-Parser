@@ -1,46 +1,15 @@
 
-
+// To test, create a nested associative array
+// Should look like:
+// FunctionDeclaration
+// 		--> VariableDeclaration
+// So, a variable is inside a function
 var structured = {};
 structured['FunctionDeclaration'] = {};
 structured['FunctionDeclaration']['VariableDeclaration'] = null;
 
+// Input string for the test
 var code = "function anything() {var a = 1;}"
-
-function getElementsFromObj(obj, allElements) {
-	for(var k in obj) {
-		if(obj.hasOwnProperty(k)) {
-			allElements.push(k);
-			getElementsFromObj(obj[k], allElements);
-		}
-	}
-}
-
-Array.prototype.unique = function(){
-  var self = this;
-  var _a = this.concat().sort();
-  _a.sort(function(a,b){
-      if(a == b){
-          var n = self.indexOf(a);
-          self.splice(n,1);
-      }
-  });
-  return self;
-};
-
-function checkItems(collectedTypes, structured) {
-	if(structured == null) {
-		return 0;
-	}
-	for(var k in structured) {
-		if(structured.hasOwnProperty(k)) {
-			if(!(k in collectedTypes)) {
-				return -1;
-			} else {
-				return 0 + checkItems(collectedTypes[k], structured[k]);
-			}
-		}
-	}
-}
 
 function collectTypes(code) {
 	try{
@@ -61,19 +30,39 @@ function collectTypes(code) {
 	}
 }
 
-function outputMessage(structured) {
-	if(structured === null){
-		return "";
-	}
-	for(var k in structured) {
-		if(structured.hasOwnProperty(k)) {
-			if(typeof structured[k] === "object") {
-				return k + "\n\t" + outputMessage(structured[k]);
-			}
+/*
+Traverses through obj which is a nested associative array to find all keys 
+in the associative array.
+*/
+function getElementsFromObj(obj, allElements) {
+	for(var k in obj) {
+		if(obj.hasOwnProperty(k)) {
+			allElements.push(k);
+			getElementsFromObj(obj[k], allElements);
 		}
 	}
 }
 
+/*
+Takes the unique of all elements in an array
+*/
+Array.prototype.unique = function(){
+  var self = this;
+  var _a = this.concat().sort();
+  _a.sort(function(a,b){
+      if(a == b){
+          var n = self.indexOf(a);
+          self.splice(n,1);
+      }
+  });
+  return self;
+};
+
+/* 
+Traverse through the ast, and collect the types which match 
+the structured critera, and append the collected types in an 
+nested associative array
+*/
 function traverseStructured(node, syntaxList, collectedTypes) {
 	for(s in syntaxList) {
 		if(node.type === syntaxList[s]) {		
@@ -103,5 +92,40 @@ function traverseStructured(node, syntaxList, collectedTypes) {
 		}
 	}
 }
+
+/*
+Compare the nested associative array obtained by traversing the 
+ast with the structured criteria as an associative array given 
+in the beginning.
+*/
+function checkItems(collectedTypes, structured) {
+	if(structured == null) {
+		return 0;
+	}
+	for(var k in structured) {
+		if(structured.hasOwnProperty(k)) {
+			if(!(k in collectedTypes)) {
+				return -1;
+			} else {
+				return 0 + checkItems(collectedTypes[k], structured[k]);
+			}
+		}
+	}
+}
+
+function outputMessage(structured) {
+	if(structured === null){
+		return "";
+	}
+	for(var k in structured) {
+		if(structured.hasOwnProperty(k)) {
+			if(typeof structured[k] === "object") {
+				return k + "\n\t" + outputMessage(structured[k]);
+			}
+		}
+	}
+}
+
+
 
 
