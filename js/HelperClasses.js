@@ -1,16 +1,28 @@
 
-
 // Helper Classes - these classes allow the strategy design pattern so that 
 // the three tests are gracefully incorporated.
 
-// the syntax list is the syntaxes of interest
+// White class - performs the white list tests
+
+/*
+@param syntaxList
+					the syntax list is the syntaxes of interest for the test
+*/
 var WhiteTest = function(syntaxList) {
 	this.syntaxList = syntaxList;
 }
 
-// compare the syntax list with the syntaxes found from traversing the 
-// abstract syntax tree.
-// outputs the syntaxes that are still missing
+/*
+Compare the syntax list with the syntaxes found from traversing the 
+abstract syntax tree. Checks to see which items are still missing.
+
+@param collectedSyntaxes
+						An array of strings corresponding to syntaxes collected from
+						traversing the ast.
+
+@return An array of strings corresponding to the syntaxes that are still missing
+				from the syntaxes collected from the ast.
+*/
 WhiteTest.prototype.checkItems = function(collectedSyntaxes) {
 	itemsRemain = [];
 	for(w in this.syntaxList) {
@@ -34,11 +46,29 @@ WhiteTest.prototype.showAlert = function(message) {
   $("#alert1").show();
 }
 
+
+// Black class - performs the black list tests
+
+/*
+@param syntaxList
+					the syntax list is the syntaxes of interest for the test
+*/
 var BlackTest = function(syntaxList) {
 	this.syntaxList = syntaxList;
 }
 
-// outputs the syntaxes that match with those found in the syntax tree
+/*
+Compare the syntax list with the syntaxes found from traversing the 
+abstract syntax tree (ast). Checks to see which items are present, but 
+should not be.
+
+@param collectedSyntaxes
+						An array of strings corresponding to syntaxes collected from
+						traversing the ast.
+
+@return An array of strings corresponding to the syntaxes that are present 
+				from the syntaxes collected from the ast.
+*/
 BlackTest.prototype.checkItems = function(collectedSyntaxes) {
 	itemsPresent = [];
 	for(w in this.syntaxList) {
@@ -62,13 +92,24 @@ BlackTest.prototype.showAlert = function(message) {
   $("#alert2").show();
 }
 
+// Structured class - performs the structured tests
+
+/*
+@param syntaxList
+					the syntax list is the syntaxes of interest for the test
+*/
 var StructuredTest = function(syntaxList) {
 	this.syntaxList = syntaxList;
 }
 
-// if the syntaxes match exactly with the abstract syntax tree, then 
-// output an empty array
-// otherwise output the syntax list.
+/*
+Checks to see if the syntaxes collected from the ast match exactly with 
+the corresponding structured list. 
+
+@return An array which is empty if the syntaxes collected from the ast matches 
+				exactly to the structured criteria, otherwise, return the 
+				array corresponding to the exact structured criteria.
+*/
 StructuredTest.prototype.checkItems = function(collectedSyntaxes) {
 	if(collectedSyntaxes.length < this.syntaxList.length) {
 		return this.syntaxList;
@@ -93,5 +134,4 @@ StructuredTest.prototype.showAlert = function(message) {
 	$("#alert3").html("<div class='alert alert-info'>" + message + "</div>");
   $("#alert3").show();
 }
-
 

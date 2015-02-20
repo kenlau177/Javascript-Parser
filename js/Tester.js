@@ -1,12 +1,30 @@
-// The main parser API
+/*
+The main parser API. The method <code>execute</code> is used to parse a string of 
+text and reply whether the text passes one of three tests.
+*/
 
-// constructor
+/*
+constructor - creates a tester object to allow for testing
+
+@param typeOfTest
+					A string indicating the type of test ('whiteList', 'blackList', 'structured')
+@param syntaxList
+					An array of syntaxes following the convention given by esprima's 
+					module at http://esprima.org/test/module.html
+*/
 var Tester = function(typeOfTest, syntaxList) {
 	this.Test = this.mapTypeOfTest(typeOfTest, syntaxList);
 	this.syntaxList = syntaxList;
 }
 
-// public method
+/*
+public method - takes in a string of text and checks to see whether the test passses
+
+@param code
+					A string of text
+
+@return A string that gives a suggestion based on the test ran.
+*/
 Tester.prototype.execute = function(code) {
 	collectedItems = this.collectTypes(code);
 	items = this.Test.checkItems(collectedItems);
@@ -14,11 +32,12 @@ Tester.prototype.execute = function(code) {
 	return this.Test.getMessage(items);
 }
 
-// private methods
+// The following are private methods
 
-// maps to one of the three helper classes. This allows the strategy 
-// design pattern and avoids many switch statements in other 
-// methods.
+/*
+Maps to one of the three helper classes. This allows the strategy 
+design pattern and avoids numerous switch statements.
+*/
 Tester.prototype.mapTypeOfTest = function(typeOfTest, syntaxList) {
 	switch(typeOfTest) {
 		case 'whiteList':
@@ -59,9 +78,12 @@ Tester.prototype.collectTypes = function(code) {
 	return collectedTypes;
 }
 
-// static methods
+// The following are static methods
+
+/*
+Split by upper case letters, and then make all letters lower case
+*/
 function splitAndLowerStr(str) {
-	// split by upper case letters
 	var arr = str.split(/(?=[A-Z])/);
 	var out = "";
 	for(i = 0; i < arr.length; i++) {
@@ -70,7 +92,15 @@ function splitAndLowerStr(str) {
 	return out.trim();
 }
 
-// concatenate strings by commas
+
+/*
+Concatenate strings by commas
+
+@param strArr
+					An array of strings
+
+@return A string
+*/
 function concatStrings(strArr) {
 	var out = "";
 	for(s in strArr) {
@@ -84,11 +114,14 @@ function concatStrings(strArr) {
 	return out;
 }
 
-// traverse down the abstract syntax tree given by esprima's parse
-// function, and apply a function to each node.
+/*
+Traverse down the abstract syntax tree given by esprima's parse
+function, and apply a function to each node.
+*/
 function traverse(node, func) {
   func(node);
   for (var key in node) {
+    // this is the convention for looping for object's properties
     if (node.hasOwnProperty(key)) {
       var child = node[key];
       if (typeof child === 'object' && child !== null) {
@@ -103,5 +136,9 @@ function traverse(node, func) {
     }
   }
 }
+
+
+
+
 
 
