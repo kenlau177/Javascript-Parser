@@ -6,7 +6,7 @@ var whiteList = ['ForStatement', 'VariableDeclaration', 'FunctionDeclaration'];
 // black list corresponds to syntaxes that should not appear in the code
 var blackList = ['WhileStatement'];
 // structured list corresponds to the exact sequence of syntaxes that should appear in the code
-var structured  = ['FunctionDeclaration', 'ForStatement'];
+ var structured  = ['FunctionDeclaration', 'ForStatement'];
 
 // basic usage
 var tester1 = new Tester('whiteList', whiteList);
@@ -16,6 +16,7 @@ var result1 = tester1.execute(someString1);
 var tester2 = new Tester('blackList', blackList);
 var someString2 = "var i; while(i < 5){i--};"
 var result2 = tester2.execute(someString2);
+
 
 /*
  intermediate usage - receives input text from an editor, then 
